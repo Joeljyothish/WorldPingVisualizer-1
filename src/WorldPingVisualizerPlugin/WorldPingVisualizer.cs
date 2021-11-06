@@ -118,8 +118,9 @@ namespace WorldPingVisualizerPlugin
 
                     // Visualize particles at ping
                     var position = ping.Position;
+                    var particleType = visualizerSettings.ParticleType;
                     var packet = NetParticlesModule.Serialize(
-                        ParticleOrchestraType.StellarTune,
+                        particleType,
                         new ParticleOrchestraSettings()
                         {
                             IndexOfPlayerWhoInvokedThis = 255,
