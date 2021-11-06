@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Terraria;
 using TerrariaApi.Server;
+using WorldPingVisualizerPlugin.Configuration;
 
 namespace WorldPingVisualizerPlugin
 {
@@ -20,6 +21,11 @@ namespace WorldPingVisualizerPlugin
         /// <inheritdoc />
         public override string Author => typeof(WorldPingVisualizer).Assembly.GetCustomAttribute<AssemblyCompanyAttribute>().Company;
 
+        /// <summary>
+        /// Gets the object that represents this plugin's configuration manager.
+        /// </summary>
+        public ConfigurationManager ConfigManager { get; private set; }
+
         public WorldPingVisualizer(Main game) : base(game)
         {
         }
@@ -27,6 +33,8 @@ namespace WorldPingVisualizerPlugin
         /// <inheritdoc />
         public override void Initialize()
         {
+            ConfigManager = new ConfigurationManager();
+            ConfigManager.Load();
         }
     }
 }
