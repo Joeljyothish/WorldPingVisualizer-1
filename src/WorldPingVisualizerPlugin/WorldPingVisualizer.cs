@@ -101,7 +101,8 @@ namespace WorldPingVisualizerPlugin
             var now = DateTime.Now;
 
             // Only visualize at specific intervals
-            var particlesInterval = ConfigManager.VisualizerConfigFile.Settings.ParticlesIntervalMilliseconds;
+            var visualizerSettings = VisualizerSettings;
+            var particlesInterval = visualizerSettings.ParticlesIntervalMilliseconds;
             var timePassedParticles = (now - LastParticlesTime).TotalMilliseconds;
             if (timePassedParticles > particlesInterval)
             {
