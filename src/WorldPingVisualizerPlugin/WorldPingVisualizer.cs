@@ -33,6 +33,8 @@ namespace WorldPingVisualizerPlugin
 
         #endregion
 
+        public static WorldPingVisualizer Instance { get; private set; }
+
         /// <summary>
         /// Gets the object that represents this plugin's configuration manager.
         /// </summary>
@@ -71,6 +73,7 @@ namespace WorldPingVisualizerPlugin
 
         public WorldPingVisualizer(Main game) : base(game)
         {
+            Instance = this;
         }
 
         /// <inheritdoc />
