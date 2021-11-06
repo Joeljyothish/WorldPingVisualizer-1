@@ -11,6 +11,7 @@ using Terraria.Net;
 using TerrariaApi.Server;
 using TShockAPI.Hooks;
 using WorldPingVisualizerPlugin.Configuration;
+using WorldPingVisualizerPlugin.Extensions;
 
 namespace WorldPingVisualizerPlugin
 {
@@ -154,19 +155,9 @@ namespace WorldPingVisualizerPlugin
                     {
                         foreach (var ping in Pings)
                         {
-                            var position = ping.Position * 16;
                             var particleType = particleSettings.ParticleType;
 
-                            var settings = new ParticleOrchestraSettings()
-                            {
-                                IndexOfPlayerWhoInvokedThis = 255,
-                                PositionInWorld = position
-                            };
-
-                            var packet = NetParticlesModule.Serialize(
-                                particleType,
-                                settings);
-                            NetManager.Instance.Broadcast(packet);
+                            ping.ShowParticles(particleType);
                         }
 
                         LastParticlesTime = now;
