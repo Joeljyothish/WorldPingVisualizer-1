@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using TShockAPI.Configuration;
 
 namespace WorldPingVisualizerPlugin.Configuration
@@ -67,7 +67,6 @@ namespace WorldPingVisualizerPlugin.Configuration
                     FileShare.Read))
                 {
                     VisualizerConfigFile.Read(fs, out incompleteSettings);
-
                 }
 
                 if (incompleteSettings)
