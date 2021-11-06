@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent.Drawing;
+using Terraria.GameContent.NetModules;
+using Terraria.Map;
+using Terraria.Net;
 using TerrariaApi.Server;
 using WorldPingVisualizerPlugin.Configuration;
 
@@ -26,6 +31,16 @@ namespace WorldPingVisualizerPlugin
         /// </summary>
         public ConfigurationManager ConfigManager { get; private set; }
 
+        /// <summary>
+        /// Gets a <see cref="DateTime"/> representing the last time particles were broadcasted at pings.
+        /// </summary>
+        public DateTime LastParticlesTime { get; private set; }
+
+        /// <summary>
+        /// Gets a list of active pings.
+        /// </summary>
+        public List<PingMapLayer.Ping> Pings { get; } = new List<PingMapLayer.Ping>();
+
         public WorldPingVisualizer(Main game) : base(game)
         {
         }
@@ -35,6 +50,54 @@ namespace WorldPingVisualizerPlugin
         {
             ConfigManager = new ConfigurationManager();
             ConfigManager.Load();
+
+            ServerApi.Hooks.GamePostUpdate.Register(this, OnGamePostUpdate);
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                ServerApi.Hooks.GamePostUpdate.Deregister(this, OnGamePostUpdate);
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private void OnGamePostUpdate(EventArgs e)
+        {
+            var now = DateTime.Now;
+
+            // Only visualize at specific intervals
+            var particlesInterval = ConfigManager.VisualizerConfigFile.Settings.ParticlesIntervalMilliseconds;
+            var timePassedParticles = (now - LastParticlesTime).TotalMilliseconds;
+            if (timePassedParticles > particlesInterval)
+            {
+                foreach (var ping in Pings)
+                {
+                    // Removed expired pings
+                    var pingLifetime = (now - ping.Time).TotalSeconds;
+                    if (pingLifetime > PingMapLayer.PING_DURATION_IN_SECONDS)
+                    {
+                        Pings.Remove(ping);
+                        continue;
+                    }
+
+                    // Visualize particles at ping
+                    var position = ping.Position;
+                    var packet = NetParticlesModule.Serialize(
+                        ParticleOrchestraType.StellarTune,
+                        new ParticleOrchestraSettings()
+                        {
+                            IndexOfPlayerWhoInvokedThis = 255,
+                            PositionInWorld = position
+                        });
+                    NetManager.Instance.Broadcast(packet);
+                }
+
+                LastParticlesTime = now;
+            }
         }
     }
 }
