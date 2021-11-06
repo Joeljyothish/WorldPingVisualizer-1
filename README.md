@@ -10,8 +10,8 @@ WorldPingVisualizer is a TShock plugin that visualizes map pings
 
 ## Installation
 1. Grab the [latest](https://github.com/Arthri/WorldPingVisualizer/relases/latest) release
-2. Unzip the zip
-3. Drag and drop `WorldPingVisualizer.dll` into the ServerPlugins folder
+2. Put the zip in `ServerPlugins` folder
+3. Unzip the zip
 
 ## Usage
 1. Open full map
