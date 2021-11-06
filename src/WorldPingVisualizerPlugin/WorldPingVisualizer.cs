@@ -8,6 +8,7 @@ using Terraria.GameContent.NetModules;
 using Terraria.Map;
 using Terraria.Net;
 using TerrariaApi.Server;
+using TShockAPI.Hooks;
 using WorldPingVisualizerPlugin.Configuration;
 
 namespace WorldPingVisualizerPlugin
@@ -58,6 +59,8 @@ namespace WorldPingVisualizerPlugin
         {
             ConfigManager = new ConfigurationManager();
             ConfigManager.Load();
+
+            GeneralHooks.ReloadEvent += ConfigReload;
 
             ServerApi.Hooks.NetGetData.Register(this, OnGetData);
             ServerApi.Hooks.GamePostUpdate.Register(this, OnGamePostUpdate);
@@ -132,6 +135,11 @@ namespace WorldPingVisualizerPlugin
 
                 LastParticlesTime = now;
             }
+        }
+
+        private void ConfigReload(ReloadEventArgs e)
+        {
+            ConfigManager.Reload();
         }
     }
 }

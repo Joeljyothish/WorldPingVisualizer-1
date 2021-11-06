@@ -27,9 +27,19 @@ namespace WorldPingVisualizerPlugin.Configuration
         /// </summary>
         public void Load()
         {
-            var visualizerConfigPath = Paths.VisualizerConfigPath;
             VisualizerConfigFile = new ConfigFile<VisualizerSettings>();
 
+            Reload();
+
+            Loaded = true;
+        }
+
+        /// <summary>
+        /// Reloads the configs.
+        /// </summary>
+        public void Reload()
+        {
+            var visualizerConfigPath = Paths.VisualizerConfigPath;
             if (!File.Exists(visualizerConfigPath))
             {
                 VisualizerConfigFile.Settings = new VisualizerSettings();
@@ -53,8 +63,6 @@ namespace WorldPingVisualizerPlugin.Configuration
                     VisualizerConfigFile.Read(fs, out bool incompleteSettings);
                 }
             }
-
-            Loaded = true;
         }
     }
 }
