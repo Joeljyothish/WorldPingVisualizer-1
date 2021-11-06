@@ -41,7 +41,7 @@ namespace WorldPingVisualizerPlugin
         }
 
         /// <summary>
-        /// Gets a <see cref="DateTime"/> representing the last time particles were broadcasted at pings.
+        /// Gets a <see cref="DateTime"/> indicating the last time particles were broadcasted at pings.
         /// </summary>
         public DateTime LastParticlesTime { get; private set; }
 
