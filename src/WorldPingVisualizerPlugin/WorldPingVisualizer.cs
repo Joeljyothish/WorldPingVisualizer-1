@@ -136,21 +136,21 @@ namespace WorldPingVisualizerPlugin
 
             var visualizerSettings = VisualizerSettings;
 
-            // Only visualize at specific intervals
             var particlesInterval = visualizerSettings.ParticlesIntervalMilliseconds;
             var timePassedParticles = (now - LastParticlesTime).TotalMilliseconds;
             if (timePassedParticles > particlesInterval)
             {
                 foreach (var ping in Pings)
                 {
-                    // Visualize particles at ping
                     var position = ping.Position;
                     var particleType = visualizerSettings.ParticleType;
+
                     var settings = new ParticleOrchestraSettings()
                     {
                         IndexOfPlayerWhoInvokedThis = 255,
                         PositionInWorld = position
                     };
+
                     var packet = NetParticlesModule.Serialize(
                         particleType,
                         settings);
@@ -168,11 +168,13 @@ namespace WorldPingVisualizerPlugin
                 {
                     var combatTextContents = visualizerSettings.CombatTextContents;
                     var networkText = NetworkText.FromLiteral(combatTextContents);
+
                     var argbColor = visualizerSettings.CombatTextColor;
                     var abgrColor =
                         (argbColor & 0xFF00FF00)
                       | ((argbColor & 0x00FF0000) >> 16)
                       | ((argbColor & 0x000000FF) << 16);
+
                     NetMessage.SendData(
                         msgType: (int)PacketTypes.CreateCombatTextExtended,
                         text: networkText,
