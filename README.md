@@ -4,9 +4,9 @@ WorldPingVisualizer is a TShock plugin that visualizes map pings
 ![GitHub license](https://img.shields.io/github/license/Arthri/WorldPingVisualizer?style=flat-square) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Arthri/WorldPingVisualizer?sort=semver&style=flat-square) ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Arthri/WorldPingVisualizer?include_prereleases&sort=semver&style=flat-square)
 
 ## Features
-- 🔴 Shows CombatText at ping locations
-- 🔴 Shows Particles at ping locations
-- 🟡 Supports TShock `/reload`
+- Shows CombatText at ping locations
+- Shows Particles at ping locations
+- Supports TShock `/reload`
 
 ## Screenshots
 ![WPV Example 1](../docs/Usage-1.gif)
