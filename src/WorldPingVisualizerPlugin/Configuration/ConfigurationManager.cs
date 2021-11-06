@@ -15,15 +15,31 @@ namespace WorldPingVisualizerPlugin.Configuration
 
         public void Load()
         {
+            var visualizerConfigPath = Paths.VisualizerConfigPath;
             VisualizerConfigFile = new ConfigFile<VisualizerSettings>();
 
-            using (FileStream fs = new FileStream(
-                Paths.VisualizerConfigPath,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read))
+            if (!File.Exists(visualizerConfigPath))
             {
-                VisualizerConfigFile.Read(fs, out bool incompleteSettings);
+                VisualizerConfigFile.Settings = new VisualizerSettings();
+                using (FileStream fs = new FileStream(
+                    visualizerConfigPath,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None))
+                {
+                    VisualizerConfigFile.Write(fs);
+                }
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(
+                    visualizerConfigPath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.Read))
+                {
+                    VisualizerConfigFile.Read(fs, out bool incompleteSettings);
+                }
             }
 
             Loaded = true;
