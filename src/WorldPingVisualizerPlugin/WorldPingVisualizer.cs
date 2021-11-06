@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Terraria;
-using Terraria.GameContent.Drawing;
 using Terraria.GameContent.NetModules;
 using Terraria.Localization;
 using Terraria.Map;
