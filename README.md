@@ -8,6 +8,9 @@ WorldPingVisualizer is a TShock plugin that visualizes map pings
 - 🔴 Shows Particles at ping locations
 - 🟡 Supports TShock `/reload`
 
+## Screenshots
+![WPV Example 1](../docs/Usage-1.gif)
+
 ## Installation
 1. Grab the [latest](https://github.com/Arthri/WorldPingVisualizer/relases/latest) release
 2. Put the zip in `ServerPlugins` folder
