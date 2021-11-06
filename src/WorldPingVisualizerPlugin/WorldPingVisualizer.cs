@@ -42,6 +42,11 @@ namespace WorldPingVisualizerPlugin
         }
 
         /// <summary>
+        /// Gets a <see cref="DateTime"/> indicating the last time ping expiration was checked.
+        /// </summary>
+        public DateTime LastExpiredCheckTime { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="DateTime"/> indicating the last time particles were broadcasted at pings.
         /// </summary>
         public DateTime LastParticlesTime { get; private set; }
@@ -109,6 +114,26 @@ namespace WorldPingVisualizerPlugin
         {
             var now = DateTime.Now;
 
+            if (Pings.Count > 0)
+            {
+                var timePassedExpiration = (now - LastExpiredCheckTime).TotalSeconds;
+                if (timePassedExpiration > 1)
+                {
+                    // Reverse for loop to delete times
+                    // Using a normal for loop to clear items shifts the indexes
+                    // And will lead to Index Out of Range Exception
+                    for (int i = Pings.Count; i-- > 0;)
+                    {
+                        var ping = Pings[i];
+                        var pingLifetime = (now - ping.Time).TotalSeconds;
+                        if (pingLifetime > PingMapLayer.PING_DURATION_IN_SECONDS)
+                        {
+                            Pings.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+
             var visualizerSettings = VisualizerSettings;
 
             // Only visualize at specific intervals
@@ -118,12 +143,6 @@ namespace WorldPingVisualizerPlugin
             {
                 foreach (var ping in Pings)
                 {
-                    if (IsExpired(ping))
-                    {
-                        Pings.Remove(ping);
-                        continue;
-                    }
-
                     // Visualize particles at ping
                     var position = ping.Position;
                     var particleType = visualizerSettings.ParticleType;
@@ -147,12 +166,6 @@ namespace WorldPingVisualizerPlugin
             {
                 foreach (var ping in Pings)
                 {
-                    if (IsExpired(ping))
-                    {
-                        Pings.Remove(ping);
-                        continue;
-                    }
-
                     var combatTextContents = visualizerSettings.CombatTextContents;
                     var networkText = NetworkText.FromLiteral(combatTextContents);
                     var argbColor = visualizerSettings.CombatTextColor;
@@ -169,18 +182,6 @@ namespace WorldPingVisualizerPlugin
                 }
 
                 LastCombatTextTime = now;
-            }
-
-            bool IsExpired(PingMapLayer.Ping ping)
-            {
-                // Removed expired pings
-                var pingLifetime = (now - ping.Time).TotalSeconds;
-                if (pingLifetime > PingMapLayer.PING_DURATION_IN_SECONDS)
-                {
-                    return true;
-                }
-
-                return false;
             }
         }
 
