@@ -36,13 +36,13 @@ namespace WorldPingVisualizerPlugin
         /// <summary>
         /// Gets the object that represents this plugin's configuration manager.
         /// </summary>
-        private ConfigurationManager ConfigManager { get; private set; }
+        private ConfigurationManager _configManager;
 
         /// <inheritdoc cref="ConfigurationManager.VisualizerConfigFile"/>
         public VisualizerSettings VisualizerSettings
         {
-            get => ConfigManager.VisualizerConfigFile.Settings;
-            set => ConfigManager.VisualizerConfigFile.Settings = value;
+            get => _configManager.VisualizerConfigFile.Settings;
+            set => _configManager.VisualizerConfigFile.Settings = value;
         }
 
         #region Last- Times
@@ -76,8 +76,8 @@ namespace WorldPingVisualizerPlugin
         /// <inheritdoc />
         public override void Initialize()
         {
-            ConfigManager = new ConfigurationManager();
-            ConfigManager.Load();
+            _configManager = new ConfigurationManager();
+            _configManager.Load();
 
             GeneralHooks.ReloadEvent += ConfigReload;
 
@@ -203,7 +203,7 @@ namespace WorldPingVisualizerPlugin
 
         private void ConfigReload(ReloadEventArgs e)
         {
-            ConfigManager.Reload();
+            _configManager.Reload();
         }
 
         #endregion
