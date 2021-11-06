@@ -30,7 +30,7 @@ namespace WorldPingVisualizerPlugin
         /// <summary>
         /// Gets the object that represents this plugin's configuration manager.
         /// </summary>
-        public ConfigurationManager ConfigManager { get; private set; }
+        private ConfigurationManager ConfigManager { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="DateTime"/> representing the last time particles were broadcasted at pings.
