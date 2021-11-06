@@ -1,6 +1,7 @@
 source https://nuget.org/api/v2
 
 nuget Newtonsoft.Json 10.0.3
+nuget LrndefLib 2.0.0
 
 framework: net472
 

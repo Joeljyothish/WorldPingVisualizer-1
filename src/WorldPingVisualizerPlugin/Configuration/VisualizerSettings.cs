@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LrndefLib;
+using Newtonsoft.Json;
 using Terraria.GameContent.Drawing;
 
 namespace WorldPingVisualizerPlugin.Configuration
@@ -8,6 +9,11 @@ namespace WorldPingVisualizerPlugin.Configuration
     /// </summary>
     public class VisualizerSettings
     {
+        /// <summary>
+        /// Represents the current version of <see cref="VisualizerSettings"/>.
+        /// </summary>
+        public static readonly SimpleVersion CurrentVersion = new SimpleVersion(1, 0, 0, 0);
+
         /// <summary>
         /// Represents the settings used to visualize pings via particles.
         /// </summary>

@@ -1,5 +1,6 @@
+﻿using LrndefLib;
+using Newtonsoft.Json;
 using System.IO;
-using TShockAPI.Configuration;
 
 namespace WorldPingVisualizerPlugin.Configuration
 {
@@ -13,7 +14,7 @@ namespace WorldPingVisualizerPlugin.Configuration
         /// <summary>
         /// Gets an object representing visualizer settings.
         /// </summary>
-        public ConfigFile<VisualizerSettings> VisualizerConfigFile { get; private set; }
+        public VersionedConfigFile<VisualizerSettings> VisualizerConfigFile { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ConfigurationManager"/>.
@@ -27,7 +28,9 @@ namespace WorldPingVisualizerPlugin.Configuration
         /// </summary>
         public void Load()
         {
-            VisualizerConfigFile = new ConfigFile<VisualizerSettings>();
+            VisualizerConfigFile = new VersionedConfigFile<VisualizerSettings>(
+                VisualizerSettings.CurrentVersion
+            );
 
             Reload();
 
@@ -47,6 +50,9 @@ namespace WorldPingVisualizerPlugin.Configuration
             var visualizerConfigPath = Paths.VisualizerConfigPath;
             if (!File.Exists(visualizerConfigPath))
             {
+                VisualizerConfigFile.Metadata = new SettingsMetadata(
+                    SettingsMetadata.CurrentMetadataVersion,
+                    VisualizerSettings.CurrentVersion);
                 VisualizerConfigFile.Settings = new VisualizerSettings();
                 using (FileStream fs = new FileStream(
                     visualizerConfigPath,
@@ -54,7 +60,7 @@ namespace WorldPingVisualizerPlugin.Configuration
                     FileAccess.Write,
                     FileShare.None))
                 {
-                    VisualizerConfigFile.Write(fs);
+                    VisualizerConfigFile.Write(fs, TransformWriter);
                 }
             }
             else
@@ -77,10 +83,16 @@ namespace WorldPingVisualizerPlugin.Configuration
                         FileAccess.Write,
                         FileShare.None))
                     {
-                        VisualizerConfigFile.Write(wfs);
+                        VisualizerConfigFile.Write(wfs, TransformWriter);
                     }
                 }
             }
+        }
+
+        private void TransformWriter(JsonTextWriter writer)
+        {
+            writer.Formatting = Formatting.Indented;
+            writer.Indentation = 4;
         }
     }
 }
