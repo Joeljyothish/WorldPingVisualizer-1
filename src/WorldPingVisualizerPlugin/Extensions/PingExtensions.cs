@@ -13,7 +13,7 @@ namespace WorldPingVisualizerPlugin.Extensions
     public static class PingExtensions
     {
         /// <summary>
-        /// Show &lt;<paramref name="particleType"/>&gt; particles at <paramref name="ping"/>.
+        /// Show &lt;<paramref name="particleType"/>&gt; particles at <see cref="Ping.Position"/>.
         /// </summary>
         /// <param name="ping">The ping.</param>
         /// <param name="particleType">The particle type to show.</param>
