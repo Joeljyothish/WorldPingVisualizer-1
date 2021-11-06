@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent.Drawing;
@@ -51,6 +52,7 @@ namespace WorldPingVisualizerPlugin
             ConfigManager = new ConfigurationManager();
             ConfigManager.Load();
 
+            ServerApi.Hooks.NetGetData.Register(this, OnGetData);
             ServerApi.Hooks.GamePostUpdate.Register(this, OnGamePostUpdate);
         }
 
@@ -59,10 +61,32 @@ namespace WorldPingVisualizerPlugin
         {
             if (disposing)
             {
+                ServerApi.Hooks.NetGetData.Deregister(this, OnGetData);
                 ServerApi.Hooks.GamePostUpdate.Deregister(this, OnGamePostUpdate);
             }
 
             base.Dispose(disposing);
+        }
+
+        private void OnGetData(GetDataEventArgs e)
+        {
+            using (var stream = new MemoryStream(e.Msg.readBuffer, e.Index, e.Length))
+            {
+                if (e.MsgID == PacketTypes.LoadNetModule)
+                {
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        var id = reader.ReadUInt16();
+                        var module = NetManager.Instance._modules[id];
+                        if (module.GetType() == typeof(NetPingModule))
+                        {
+                            var position = reader.ReadVector2();
+                            var ping = new PingMapLayer.Ping(position);
+                            Pings.Add(ping);
+                        }
+                    }
+                }
+            }
         }
 
         private void OnGamePostUpdate(EventArgs e)
