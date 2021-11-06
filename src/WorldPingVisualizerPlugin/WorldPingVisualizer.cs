@@ -175,21 +175,9 @@ namespace WorldPingVisualizerPlugin
                         {
                             var combatTextContents = combatTextSettings.CombatTextContents;
                             var networkText = NetworkText.FromLiteral(combatTextContents);
-
                             var argbColor = combatTextSettings.CombatTextColor;
-                            var abgrColor =
-                                (argbColor & 0xFF00FF00)
-                              | ((argbColor & 0x00FF0000) >> 16)
-                              | ((argbColor & 0x000000FF) << 16);
 
-                            var position = ping.Position * 16;
-
-                            NetMessage.SendData(
-                                msgType: (int)PacketTypes.CreateCombatTextExtended,
-                                text: networkText,
-                                number: (int)abgrColor,
-                                number2: position.X,
-                                number3: position.Y);
+                            ping.ShowCombatText(networkText, argbColor);
                         }
 
                         LastCombatTextTime = now;
