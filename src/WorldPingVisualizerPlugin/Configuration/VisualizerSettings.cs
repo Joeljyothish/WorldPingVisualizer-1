@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel;
 using Terraria.GameContent.Drawing;
 
