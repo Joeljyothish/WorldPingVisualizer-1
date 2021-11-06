@@ -122,10 +122,10 @@ namespace WorldPingVisualizerPlugin
 
         private void OnGamePostUpdate(EventArgs e)
         {
-            var now = DateTime.Now;
-
             if (Pings.Count > 0)
             {
+                var now = DateTime.Now;
+
                 var timePassedExpiration = (now - LastExpiredCheckTime).TotalSeconds;
                 if (timePassedExpiration > 1)
                 {
@@ -142,58 +142,58 @@ namespace WorldPingVisualizerPlugin
                         }
                     }
                 }
-            }
 
-            var visualizerSettings = VisualizerSettings;
+                var visualizerSettings = VisualizerSettings;
 
-            var particlesInterval = visualizerSettings.ParticlesIntervalMilliseconds;
-            var timePassedParticles = (now - LastParticlesTime).TotalMilliseconds;
-            if (timePassedParticles > particlesInterval)
-            {
-                foreach (var ping in Pings)
+                var particlesInterval = visualizerSettings.ParticlesIntervalMilliseconds;
+                var timePassedParticles = (now - LastParticlesTime).TotalMilliseconds;
+                if (timePassedParticles > particlesInterval)
                 {
-                    var position = ping.Position;
-                    var particleType = visualizerSettings.ParticleType;
-
-                    var settings = new ParticleOrchestraSettings()
+                    foreach (var ping in Pings)
                     {
-                        IndexOfPlayerWhoInvokedThis = 255,
-                        PositionInWorld = position
-                    };
+                        var position = ping.Position;
+                        var particleType = visualizerSettings.ParticleType;
 
-                    var packet = NetParticlesModule.Serialize(
-                        particleType,
-                        settings);
-                    NetManager.Instance.Broadcast(packet);
+                        var settings = new ParticleOrchestraSettings()
+                        {
+                            IndexOfPlayerWhoInvokedThis = 255,
+                            PositionInWorld = position
+                        };
+
+                        var packet = NetParticlesModule.Serialize(
+                            particleType,
+                            settings);
+                        NetManager.Instance.Broadcast(packet);
+                    }
+
+                    LastParticlesTime = now;
                 }
 
-                LastParticlesTime = now;
-            }
-
-            var combatTextInterval = visualizerSettings.CombatTextIntervalMilliseconds;
-            var timePassedCombatText = (now - LastCombatTextTime).TotalMilliseconds;
-            if (timePassedCombatText > combatTextInterval)
-            {
-                foreach (var ping in Pings)
+                var combatTextInterval = visualizerSettings.CombatTextIntervalMilliseconds;
+                var timePassedCombatText = (now - LastCombatTextTime).TotalMilliseconds;
+                if (timePassedCombatText > combatTextInterval)
                 {
-                    var combatTextContents = visualizerSettings.CombatTextContents;
-                    var networkText = NetworkText.FromLiteral(combatTextContents);
+                    foreach (var ping in Pings)
+                    {
+                        var combatTextContents = visualizerSettings.CombatTextContents;
+                        var networkText = NetworkText.FromLiteral(combatTextContents);
 
-                    var argbColor = visualizerSettings.CombatTextColor;
-                    var abgrColor =
-                        (argbColor & 0xFF00FF00)
-                      | ((argbColor & 0x00FF0000) >> 16)
-                      | ((argbColor & 0x000000FF) << 16);
+                        var argbColor = visualizerSettings.CombatTextColor;
+                        var abgrColor =
+                            (argbColor & 0xFF00FF00)
+                          | ((argbColor & 0x00FF0000) >> 16)
+                          | ((argbColor & 0x000000FF) << 16);
 
-                    NetMessage.SendData(
-                        msgType: (int)PacketTypes.CreateCombatTextExtended,
-                        text: networkText,
-                        number: (int)abgrColor,
-                        number2: ping.Position.X,
-                        number3: ping.Position.Y);
+                        NetMessage.SendData(
+                            msgType: (int)PacketTypes.CreateCombatTextExtended,
+                            text: networkText,
+                            number: (int)abgrColor,
+                            number2: ping.Position.X,
+                            number3: ping.Position.Y);
+                    }
+
+                    LastCombatTextTime = now;
                 }
-
-                LastCombatTextTime = now;
             }
         }
 
