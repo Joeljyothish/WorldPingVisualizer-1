@@ -39,6 +39,11 @@ namespace WorldPingVisualizerPlugin.Configuration
         /// </summary>
         public void Reload()
         {
+            if (!Directory.Exists(Paths.SavePath))
+            {
+                Directory.CreateDirectory(Paths.SavePath);
+            }
+
             var visualizerConfigPath = Paths.VisualizerConfigPath;
             if (!File.Exists(visualizerConfigPath))
             {
