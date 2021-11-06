@@ -111,9 +111,7 @@ namespace WorldPingVisualizerPlugin
             {
                 foreach (var ping in Pings)
                 {
-                    // Removed expired pings
-                    var pingLifetime = (now - ping.Time).TotalSeconds;
-                    if (pingLifetime > PingMapLayer.PING_DURATION_IN_SECONDS)
+                    if (IsExpired(ping))
                     {
                         Pings.Remove(ping);
                         continue;
@@ -134,6 +132,18 @@ namespace WorldPingVisualizerPlugin
                 }
 
                 LastParticlesTime = now;
+            }
+
+            bool IsExpired(PingMapLayer.Ping ping)
+            {
+                // Removed expired pings
+                var pingLifetime = (now - ping.Time).TotalSeconds;
+                if (pingLifetime > PingMapLayer.PING_DURATION_IN_SECONDS)
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
 
