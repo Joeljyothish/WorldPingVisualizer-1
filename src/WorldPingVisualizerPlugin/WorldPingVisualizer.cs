@@ -5,6 +5,7 @@ using System.Reflection;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.NetModules;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.Net;
 using TerrariaApi.Server;
@@ -44,6 +45,11 @@ namespace WorldPingVisualizerPlugin
         /// Gets a <see cref="DateTime"/> indicating the last time particles were broadcasted at pings.
         /// </summary>
         public DateTime LastParticlesTime { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="DateTime"/> indicating the last time CombatText was broadcasted at pings.
+        /// </summary>
+        public DateTime LastCombatTextTime { get; private set; }
 
         /// <summary>
         /// Gets a list of active pings.
@@ -133,6 +139,36 @@ namespace WorldPingVisualizerPlugin
                 }
 
                 LastParticlesTime = now;
+            }
+
+            var combatTextInterval = visualizerSettings.CombatTextIntervalMilliseconds;
+            var timePassedCombatText = (now - LastCombatTextTime).TotalMilliseconds;
+            if (timePassedCombatText > combatTextInterval)
+            {
+                foreach (var ping in Pings)
+                {
+                    if (IsExpired(ping))
+                    {
+                        Pings.Remove(ping);
+                        continue;
+                    }
+
+                    var combatTextContents = visualizerSettings.CombatTextContents;
+                    var networkText = NetworkText.FromLiteral(combatTextContents);
+                    var argbColor = visualizerSettings.CombatTextColor;
+                    var abgrColor =
+                        (argbColor & 0xFF00FF00)
+                      | ((argbColor & 0x00FF0000) >> 16)
+                      | ((argbColor & 0x000000FF) << 16);
+                    NetMessage.SendData(
+                        msgType: (int)PacketTypes.CreateCombatTextExtended,
+                        text: networkText,
+                        number: (int)abgrColor,
+                        number2: ping.Position.X,
+                        number3: ping.Position.Y);
+                }
+
+                LastCombatTextTime = now;
             }
 
             bool IsExpired(PingMapLayer.Ping ping)
