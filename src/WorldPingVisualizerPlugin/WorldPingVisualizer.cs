@@ -17,6 +17,8 @@ namespace WorldPingVisualizerPlugin
     [ApiVersion(2, 1)]
     public class WorldPingVisualizer : TerrariaPlugin
     {
+        #region Plugin Information
+
         /// <inheritdoc />
         public override string Name => typeof(WorldPingVisualizer).Assembly.GetCustomAttribute<AssemblyTitleAttribute>().Title;
 
@@ -29,6 +31,8 @@ namespace WorldPingVisualizerPlugin
         /// <inheritdoc />
         public override string Author => typeof(WorldPingVisualizer).Assembly.GetCustomAttribute<AssemblyCompanyAttribute>().Company;
 
+        #endregion
+
         /// <summary>
         /// Gets the object that represents this plugin's configuration manager.
         /// </summary>
@@ -40,6 +44,8 @@ namespace WorldPingVisualizerPlugin
             get => ConfigManager.VisualizerConfigFile.Settings;
             set => ConfigManager.VisualizerConfigFile.Settings = value;
         }
+
+        #region Last- Times
 
         /// <summary>
         /// Gets a <see cref="DateTime"/> indicating the last time ping expiration was checked.
@@ -55,6 +61,8 @@ namespace WorldPingVisualizerPlugin
         /// Gets a <see cref="DateTime"/> indicating the last time CombatText was broadcasted at pings.
         /// </summary>
         public DateTime LastCombatTextTime { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// Gets a list of active pings.
@@ -88,6 +96,8 @@ namespace WorldPingVisualizerPlugin
 
             base.Dispose(disposing);
         }
+
+        #region Hooks
 
         private void OnGetData(GetDataEventArgs e)
         {
@@ -187,9 +197,15 @@ namespace WorldPingVisualizerPlugin
             }
         }
 
+        #endregion
+
+        #region TShock Hooks
+
         private void ConfigReload(ReloadEventArgs e)
         {
             ConfigManager.Reload();
         }
+
+        #endregion
     }
 }
