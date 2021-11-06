@@ -32,6 +32,13 @@ namespace WorldPingVisualizerPlugin
         /// </summary>
         private ConfigurationManager ConfigManager { get; private set; }
 
+        /// <inheritdoc cref="ConfigurationManager.VisualizerConfigFile"/>
+        public VisualizerSettings VisualizerSettings
+        {
+            get => ConfigManager.VisualizerConfigFile.Settings;
+            set => ConfigManager.VisualizerConfigFile.Settings = value;
+        }
+
         /// <summary>
         /// Gets a <see cref="DateTime"/> representing the last time particles were broadcasted at pings.
         /// </summary>
