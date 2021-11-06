@@ -59,13 +59,27 @@ namespace WorldPingVisualizerPlugin.Configuration
             }
             else
             {
+                bool incompleteSettings;
                 using (FileStream fs = new FileStream(
                     visualizerConfigPath,
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read))
                 {
-                    VisualizerConfigFile.Read(fs, out bool incompleteSettings);
+                    VisualizerConfigFile.Read(fs, out incompleteSettings);
+
+                }
+
+                if (incompleteSettings)
+                {
+                    using (FileStream wfs = new FileStream(
+                        visualizerConfigPath,
+                        FileMode.Create,
+                        FileAccess.Write,
+                        FileShare.None))
+                    {
+                        VisualizerConfigFile.Write(wfs);
+                    }
                 }
             }
         }
