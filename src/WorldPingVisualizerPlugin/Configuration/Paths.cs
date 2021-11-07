@@ -5,9 +5,7 @@ namespace WorldPingVisualizerPlugin.Configuration
 {
     public static class Paths
     {
-        public static readonly string ServerPath = Path.GetDirectoryName(typeof(ServerApi).Assembly.Location);
-
-        public static readonly string ConfigPath = Path.Combine(ServerPath, "config");
+        public static readonly string ConfigPath = Path.GetFullPath("config");
 
         public static readonly string SavePath = Path.Combine(ConfigPath, "WorldPingVisualizerPlugin");
 
