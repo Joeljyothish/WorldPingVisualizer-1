@@ -1,5 +1,5 @@
 # Configuration
-WorldPingVisualizer allows you to configure a number of options, such as how often pings are visualized, or how the visualizations look
+World Ping Visualizer allows you to configure a number of options, such as how often pings are visualized, or how the visualizations look
 
 ## Configuration Path
 By default, the plugin save path is `{Working Directory}/config/WorldPingVisualizer/`

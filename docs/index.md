@@ -1,5 +1,5 @@
-# WorldPingVisualizer
-WorldPingVisualizer is a [TShock](https://github.com/Pryaxis/TShockAPI) plugin for adding visual effects to map pings
+# World Ping Visualizer
+World Ping Visualizer is a [TShock](https://github.com/Pryaxis/TShockAPI) plugin for adding visual effects to map pings
 
 ## Features
 - Shows CombatText at ping locations

@@ -1,5 +1,5 @@
-# WorldPingVisualizer
-WorldPingVisualizer is a TShock plugin that visualizes map pings
+# World Ping Visualizer
+World Ping Visualizer is a TShock plugin that visualizes map pings
 
 ![GitHub license](https://img.shields.io/github/license/Arthri/WorldPingVisualizer?style=flat-square) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Arthri/WorldPingVisualizer?sort=semver&style=flat-square) ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Arthri/WorldPingVisualizer?include_prereleases&sort=semver&style=flat-square)
 
