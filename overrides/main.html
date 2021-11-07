@@ -2,10 +2,8 @@
 
 {% block extrahead %}
 
-  <!-- Extra color palette -->
   {% if config.theme.palette %}
     {% set firstPalette = config.theme.palette[0] %}
-    <!-- Theme-color meta tag for Android -->
     {% if firstPalette.primary %}
       {% import "partials/palette.html" as map %}
       {% set primary = map.primary(
